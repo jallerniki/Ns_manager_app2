@@ -13,3 +13,17 @@ Stage Summary:
 - "состав_" storage format unchanged (plain text "95% хлопок, 5% вискоза"), parser handles "шёлк"/"100% шёлк"/multi-part formats.
 - CHYA_TKAN_OPTIONS constant in wp-types.ts must be adjusted by the user to match their ACF choices.
 - Full details in /home/z/ns_manager_app/worklog.md (Task ID: acf-fields-update).
+
+---
+Task ID: composition-attribute-source
+Agent: main (Z.ai Code)
+Task: Ns_manager_app — список материалов конструктора состава теперь берётся из глобального атрибута WooCommerce "составы для менеджера" (sostavy-dlya-menedzhera) через REST.
+
+Work Log:
+- /home/z/ns_manager_app: api.ts (listAttributes/getAttributeTerms/fetchCompositionMaterials с localStorage-кэшем и фолбэком), wp-types.ts (COMPOSITION_ATTRIBUTE_SLUG + типы), composition-builder.tsx (проп materials), product-editor.tsx (useQuery материалов, staleTime 10 мин).
+- E2E через agent-browser + мок WP (порт 3101, эндпоинты attributes/terms с терминами пользователя): список в дропдауне = термины атрибута, поиск/выбор/сохранение работают (PUT состав_="95% хлопок, 5% шерсть вирджиния"), mobile+desktop скриншоты чистые.
+- Прод-сборка пересобрана, download/manager_app2_build.zip обновлён (в /home/z/my-project/download/ и /home/z/ns_manager_app/download/).
+
+Stage Summary:
+- Материалы состава редактируются в WP-админке (атрибут "Составы для менеджера" → Configure terms), приложение подхватывает без пересборки (рефetch раз в 10 мин сессии).
+- Тот же паттерн подойдёт для будущего поля "бренд".
